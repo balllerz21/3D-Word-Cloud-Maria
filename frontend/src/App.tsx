@@ -54,11 +54,15 @@ export default function App() {
             onClick={handleAnalyze}
             disabled={isLoading || !url.trim()}
           >
-            Analyze Article
+            {isLoading ? "Analyzing..." : "Analyze Article"}
           </button>
         </div>
 
-        {error ? <div className="errorText">{error}</div> : null}
+        {hasAnalyzed && !isLoading && keywords.length === 0 && !error && (
+          <div className="emptyState">
+              No keywords found. Try a different article.
+          </div>
+        )}
 
         <section className="panel">
           <div className="panelTitle">3D Globe Visualization</div>
