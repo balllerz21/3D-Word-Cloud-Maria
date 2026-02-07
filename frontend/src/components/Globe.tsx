@@ -136,7 +136,7 @@ function Scene({
 
       {isActive &&
         placed.map((p) => {
-          const fontSize = lerp(0.12, 0.30, Math.pow(p.wn, 1.15));
+          const fontSize = lerp(0.08, 0.48, p.wn);
 
           const outward = 0.14 + p.wn * 0.10;
           const pos = p.pos.clone().multiplyScalar(radius + outward);

@@ -25,6 +25,12 @@ export default function App() {
     }
   }
 
+  const SAMPLE_URLS = [
+    { label: "BBC", url: "https://www.bbc.com/sport/rugby-union/articles/clymye806k0o" },
+    { label: "Guardian", url: "https://www.theguardian.com/world/2026/feb/07/volodymyr-zelenskyy-us-june-deadline-ukraine-russia-peace-deal" },
+    { label: "NPR", url: "https://www.npr.org/2026/02/04/nx-s1-5698470/bad-bunny-makes-history-at-the-grammys-up-next-the-super-bbowl" },
+  ] as const;
+
   const handleAnalyze = async () => {
     const trimmed = url.trim();
     if (!trimmed || isLoading) return;
@@ -60,11 +66,7 @@ export default function App() {
     }
   };
 
-  const showGlobe =
-    hasAnalyzed &&
-    !isLoading &&
-    !error &&
-    keywords.length > 0;
+  const showGlobe = hasAnalyzed && !isLoading && !error && keywords.length > 0;
 
   return (
     <div className="appShell">
@@ -86,6 +88,22 @@ export default function App() {
             disabled={isLoading}
           />
 
+          <div className="samples">
+            <span className="samplesLabel">Samples:</span>
+            {SAMPLE_URLS.map((s) => (
+              <button
+                key={s.label}
+                type="button"
+                className="chip"
+                onClick={() => setUrl(s.url)}
+                disabled={isLoading}
+                title={s.url}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+
           <button
             className="analyzeBtn"
             onClick={handleAnalyze}
@@ -95,11 +113,7 @@ export default function App() {
           </button>
         </div>
 
-        {error && (
-          <div className="errorText">
-            {error}
-          </div>
-        )}
+        {error && <div className="errorText">{error}</div>}
 
         <section className="panel">
           <div className="panelTitle">3D Globe Visualization</div>
@@ -118,9 +132,7 @@ export default function App() {
               </div>
             )}
 
-            {showGlobe && (
-              <Globe3D keywords={keywords} isActive={true} />
-            )}
+            {showGlobe && <Globe3D keywords={keywords} isActive={true} />}
           </div>
         </section>
       </main>
