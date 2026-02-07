@@ -2,7 +2,7 @@
 
 Interactive web app that visualizes topics from a news article as a **3D word cloud**.
 
-Users paste a news article URL → backend extracts keywords → frontend renders an interactive 3D globe using React Three Fiber.
+Users paste a news article URL -> backend extracts keywords -> frontend renders an interactive 3D globe using React Three Fiber.
 
 ---
 
@@ -26,7 +26,24 @@ https://excalidraw.com/#json=sgVMfrFIA03GF6aR3oL1E,0ekdynoRdnb0xRpe5Hemjg
 - httpx (fetching articles)
 
 ---
+## Libraries Used
 
+### Frontend
+- React
+- TypeScript
+- Vite
+- three
+- @react-three/fiber
+- @react-three/drei
+
+### Backend
+- FastAPI
+- Uvicorn
+- httpx
+- BeautifulSoup4
+- scikit-learn (TF-IDF)
+
+---
 ## Features
 
 - Paste a news article URL
@@ -72,3 +89,12 @@ From project root:
 
 ```bash
 ./setup.sh
+```
+
+This script installs all dependencies and starts both the frontend and backend servers.
+
+Frontend:
+http://localhost:5173
+
+Backend:
+http://localhost:8000
