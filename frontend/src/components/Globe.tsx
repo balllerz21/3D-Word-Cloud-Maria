@@ -85,7 +85,7 @@ function Scene({
   const textRefs = useRef<THREE.Object3D[]>([]);
   const { camera } = useThree();
 
-  const AUTO_ROT_SPEED = 0.45; 
+  const AUTO_ROT_SPEED = 0.35; 
   const radius = 2.2;
 
   useFrame((_, delta) => {
@@ -105,9 +105,9 @@ function Scene({
       <mesh>
         <sphereGeometry args={[radius, 48, 48]} />
         <meshStandardMaterial
-          color={new THREE.Color("#4b8bff")}
+          color={new THREE.Color("red")}
           transparent
-          opacity={0.1} 
+          opacity={0.15} 
           emissive={new THREE.Color("#6ea8ff")}
           emissiveIntensity={0.55}
           roughness={0.45}
