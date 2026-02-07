@@ -1,42 +1,144 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* App.css */
+
+.appShell {
+  min-height: 100vh;
+  background: #0b0f17;
+  color: white;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.appHeader {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 24px 32px;
+}
+
+.title {
+  font-size: 28px;
+  margin: 0 0 6px 0;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(255,255,255,0.55);
+  font-size: 13px;
+}
+
+.appMain {
+  padding: 28px 32px;
+}
+
+.controlsRow {
+  max-width: 980px;
+  margin: 0 auto 22px auto;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.urlInput {
+  flex: 1;
+  min-width: 520px;
+  max-width: 740px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  outline: none;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.urlInput:disabled {
+  opacity: 0.6;
+}
+
+.analyzeBtn {
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 0;
+  background: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.analyzeBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.errorText {
   text-align: center;
+  color: rgba(248,113,113,0.95);
+  margin-bottom: 10px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.panel {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #151921;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+  padding: 18px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.panelTitle {
+  text-align: center;
+  color: rgba(255,255,255,0.55);
+  margin: 6px 0 14px 0;
+  font-size: 18px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.globeStage {
+  position: relative;
+  height: 620px; /* IMPORTANT: gives the globe a real height */
+  border-radius: 14px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(59,130,246,0.14), rgba(11,15,23,0) 55%);
 }
 
-.card {
-  padding: 2em;
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(21,25,33,0.78);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
 
-.read-the-docs {
-  color: #888;
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 4px solid rgba(59,130,246,0.25);
+  border-top-color: rgba(59,130,246,0.95);
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 12px;
+}
+
+.loadingText {
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.emptyState {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(255,255,255,0.45);
+  font-size: 14px;
+  text-align: center;
+  padding: 18px;
 }

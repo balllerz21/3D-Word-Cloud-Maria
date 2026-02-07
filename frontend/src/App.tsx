@@ -2,51 +2,93 @@ import { useState } from "react";
 import { analyzeArticle } from "./lib/api";
 import type { Keyword } from "./lib/types";
 import { GlobeVisualization } from "./components/Globe";
+import "./App.css";
 
 export default function App() {
-  const [url, setUrl] = useState<string>("https://example.com");
-  const [words, setWords] = useState<Keyword[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [url, setUrl] = useState("");
+  const [keywords, setKeywords] = useState<Keyword[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasAnalyzed, setHasAnalyzed] = useState(false);
+  const [error, setError] = useState("");
 
-  async function analyze() {
-    setLoading(true);
+  const handleAnalyze = async () => {
+    if (!url.trim() || isLoading) return;
+
+    setIsLoading(true);
+    setHasAnalyzed(false);
     setError("");
 
     try {
-      const data = await analyzeArticle(url);
-      setWords(data.words ?? []);
+      const data = await analyzeArticle(url.trim());
+      setKeywords(data.words ?? []);
+      setHasAnalyzed(true);
     } catch (e: any) {
-      setError(e.message ?? "Request failed");
-      setWords([]);
+      setError(e?.message ?? "Failed to analyze article");
+      setKeywords([]);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <div style={{ padding: 32, fontFamily: "system-ui" }}>
-      <h1>3D Word Cloud</h1>
+    <div className="appShell">
+      <header className="appHeader">
+        <h1 className="title">3D Word Cloud</h1>
+        <p className="subtitle">Paste a news article URL to extract topics.</p>
+      </header>
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-        <input
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="Paste article URL"
-          style={{ width: 520, padding: 10 }}
-        />
-        <button onClick={analyze} disabled={loading || !url}>
-          {loading ? "Analyzing..." : "Analyze"}
-        </button>
-      </div>
-
-      {error && <div style={{ color: "crimson" }}>{error}</div>}
-
-      {words.length > 0 && (
-        <div style={{ height: 500, marginTop: 20 }}>
-          <GlobeVisualization keywords={words} />
+      <main className="appMain">
+        <div className="controlsRow">
+          <input
+            className="urlInput"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleAnalyze();
+            }}
+            placeholder="https://..."
+            disabled={isLoading}
+          />
+          <button
+            className="analyzeBtn"
+            onClick={handleAnalyze}
+            disabled={isLoading || !url.trim()}
+          >
+            Analyze Article
+          </button>
         </div>
-      )}
+
+        {error ? <div className="errorText">{error}</div> : null}
+
+        <section className="panel">
+          <div className="panelTitle">3D Globe Visualization</div>
+
+          <div className="globeStage">
+            {/* loading overlay */}
+            {isLoading && (
+              <div className="loadingOverlay">
+                <div className="spinner" />
+                <div className="loadingText">Analyzing…</div>
+              </div>
+            )}
+
+            {/* empty state */}
+            {!isLoading && !hasAnalyzed && (
+              <div className="emptyState">
+                Paste a URL and click Analyze to generate the word cloud.
+              </div>
+            )}
+
+            {/* show globe ONLY after analyze */}
+            {hasAnalyzed && (
+              <GlobeVisualization
+                keywords={keywords}
+                isActive={hasAnalyzed && !isLoading}
+              />
+            )}
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
