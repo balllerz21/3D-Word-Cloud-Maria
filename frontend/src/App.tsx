@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { analyzeArticle } from "./lib/api";
 import type { Keyword } from "./lib/types";
-import { KeywordsList } from "./components/KeywordsList";
+import { GlobeVisualization } from "./components/Globe";
 
 export default function App() {
   const [url, setUrl] = useState<string>("https://example.com");
@@ -41,9 +41,12 @@ export default function App() {
       </div>
 
       {error && <div style={{ color: "crimson" }}>{error}</div>}
-      <div style={{ marginTop: 16 }}>
-          <KeywordsList keywords={words} isLoading={loading} />
-      </div>
+
+      {words.length > 0 && (
+        <div style={{ height: 500, marginTop: 20 }}>
+          <GlobeVisualization keywords={words} />
+        </div>
+      )}
     </div>
   );
 }
