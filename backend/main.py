@@ -1,3 +1,10 @@
+"""
+FastAPI backend for article analysis.
+
+Pipeline:
+URL -> fetch HTML -> extract text -> TF-IDF keyword extraction -> return {word, weight}
+"""
+
 # imports
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -31,5 +38,5 @@ def analyze(req: AnalyzeRequest):
     if not text:
         return {"words": [], "error": "Failed to extract article text"}
 
-    words = get_keywords(text, top_k=25)  
+    words = get_keywords(text, top_k=50)  
     return {"words": words}

@@ -1,3 +1,8 @@
+"""
+Analyzer - the function uses TF-ID to extract key words from the data extracted from
+extractor. 
+
+"""
 from sklearn.feature_extraction.text import TfidfVectorizer
 def get_keywords(text, top_k):
     if not text:

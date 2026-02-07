@@ -1,3 +1,8 @@
+/**
+ * Root UI component.
+ * Handles URL input, calls backend /analyze endpoint,
+ * manages loading + error states, and renders the 3D globe visualization.
+ */
 import { useState } from "react";
 import { analyzeArticle } from "./lib/api";
 import type { Keyword } from "./lib/types";

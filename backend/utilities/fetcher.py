@@ -1,3 +1,6 @@
+"""
+The HTML Parser - made with httpx
+"""
 import httpx
 def html_fetcher(url):
     try:

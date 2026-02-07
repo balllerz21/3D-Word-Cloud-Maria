@@ -1,3 +1,8 @@
+""""
+Extractor - Extract the html returned from parser through BeautifulSoup and
+trafilatura
+
+"""
 from bs4 import BeautifulSoup
 import trafilatura
 

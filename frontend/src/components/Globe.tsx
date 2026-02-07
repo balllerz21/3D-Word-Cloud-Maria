@@ -1,3 +1,10 @@
+/**
+ * 3D word cloud visualization using React Three Fiber.
+ * Positions keywords on a rotating globe and maps weight to
+ * size, color, and spacing. Supports hover interactions.
+ */
+
+
 import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
