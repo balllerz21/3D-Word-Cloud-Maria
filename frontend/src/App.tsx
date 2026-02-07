@@ -1,31 +1,19 @@
 import { useState } from "react";
-
-type WordItem = {
-  word: string;
-  weight: number;
-};
+import { analyzeArticle } from "./lib/api";
+import type { Keyword } from "./lib/types";
 
 export default function App() {
   const [url, setUrl] = useState<string>("https://example.com");
-  const [words, setWords] = useState<WordItem[]>([]);
+  const [words, setWords] = useState<Keyword[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
   async function analyze() {
     setLoading(true);
     setError("");
+
     try {
-      const res = await fetch("http://127.0.0.1:8000/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Backend error: ${res.status}`);
-      }
-
-      const data = await res.json();
+      const data = await analyzeArticle(url);
       setWords(data.words ?? []);
     } catch (e: any) {
       setError(e.message ?? "Request failed");
