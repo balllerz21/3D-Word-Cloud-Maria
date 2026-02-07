@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+type WordItem = {
+  word: string;
+  weight: number;
+};
+
+export default function App() {
+  const [url, setUrl] = useState<string>("https://example.com");
+  const [words, setWords] = useState<WordItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>("");
+
+  async function analyze() {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("http://127.0.0.1:8000/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Backend error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setWords(data.words ?? []);
+    } catch (e: any) {
+      setError(e.message ?? "Request failed");
+      setWords([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div style={{ padding: 32, fontFamily: "system-ui" }}>
+      <h1>3D Word Cloud</h1>
 
-export default App
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        <input
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="Paste article URL"
+          style={{ width: 520, padding: 10 }}
+        />
+        <button onClick={analyze} disabled={loading || !url}>
+          {loading ? "Analyzing..." : "Analyze"}
+        </button>
+      </div>
+
+      {error && <div style={{ color: "crimson" }}>{error}</div>}
+
+      <div style={{ marginTop: 16 }}>
+        {words.map((w) => (
+          <div key={w.word}>
+            {w.word} — {w.weight.toFixed(2)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
