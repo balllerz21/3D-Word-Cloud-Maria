@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { analyzeArticle } from "./lib/api";
 import type { Keyword } from "./lib/types";
+import { KeywordsList } from "./components/KeywordsList";
 
 export default function App() {
   const [url, setUrl] = useState<string>("https://example.com");
@@ -40,13 +41,8 @@ export default function App() {
       </div>
 
       {error && <div style={{ color: "crimson" }}>{error}</div>}
-
       <div style={{ marginTop: 16 }}>
-        {words.map((w) => (
-          <div key={w.word}>
-            {w.word} — {w.weight.toFixed(2)}
-          </div>
-        ))}
+          <KeywordsList keywords={words} isLoading={loading} />
       </div>
     </div>
   );
