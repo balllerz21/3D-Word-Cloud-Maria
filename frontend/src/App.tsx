@@ -11,24 +11,55 @@ export default function App() {
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [error, setError] = useState("");
 
+  function isValidHttpUrl(value: string) {
+    try {
+      const u = new URL(value);
+      return u.protocol === "http:" || u.protocol === "https:";
+    } catch {
+      return false;
+    }
+  }
+
   const handleAnalyze = async () => {
-    if (!url.trim() || isLoading) return;
+    const trimmed = url.trim();
+    if (!trimmed || isLoading) return;
+
+    if (!isValidHttpUrl(trimmed)) {
+      setError("Please enter a valid http(s) URL.");
+      setKeywords([]);
+      setHasAnalyzed(false);
+      return;
+    }
 
     setIsLoading(true);
-    setHasAnalyzed(false);
     setError("");
+    setHasAnalyzed(false);
+    setKeywords([]);
 
     try {
-      const data = await analyzeArticle(url.trim());
-      setKeywords(data.words ?? []);
-      setHasAnalyzed(true);
+      const data = await analyzeArticle(trimmed);
+      const words = data.words ?? [];
+
+      if (words.length === 0) {
+        setError("No keywords found for this article.");
+        setHasAnalyzed(false);
+      } else {
+        setKeywords(words);
+        setHasAnalyzed(true);
+      }
     } catch (e: any) {
       setError(e?.message ?? "Failed to analyze article");
-      setKeywords([]);
+      setHasAnalyzed(false);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const showGlobe =
+    hasAnalyzed &&
+    !isLoading &&
+    !error &&
+    keywords.length > 0;
 
   return (
     <div className="appShell">
@@ -49,6 +80,7 @@ export default function App() {
             placeholder="https://..."
             disabled={isLoading}
           />
+
           <button
             className="analyzeBtn"
             onClick={handleAnalyze}
@@ -58,9 +90,9 @@ export default function App() {
           </button>
         </div>
 
-        {hasAnalyzed && !isLoading && keywords.length === 0 && !error && (
-          <div className="emptyState">
-              No keywords found. Try a different article.
+        {error && (
+          <div className="errorText">
+            {error}
           </div>
         )}
 
@@ -75,15 +107,15 @@ export default function App() {
               </div>
             )}
 
-            {!isLoading && !hasAnalyzed && (
+            {!isLoading && !hasAnalyzed && !error && (
               <div className="emptyState">
                 Paste a URL and click Analyze to generate the word cloud.
               </div>
             )}
 
-            {hasAnalyzed && (
-  <Globe3D keywords={keywords} isActive={!isLoading && keywords.length > 0} />
-)}
+            {showGlobe && (
+              <Globe3D keywords={keywords} isActive={true} />
+            )}
           </div>
         </section>
       </main>

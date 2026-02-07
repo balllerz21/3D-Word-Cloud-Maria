@@ -2,9 +2,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from backend.utilities.fetcher import html_fetcher
-from backend.utilities.extractor import get_text
-from backend.utilities.analyzer import get_keywords
+from utilities.fetcher import html_fetcher
+from utilities.extractor import get_text
+from utilities.analyzer import get_keywords
 # starting of app
 app = FastAPI()
 
@@ -31,5 +31,5 @@ def analyze(req: AnalyzeRequest):
     if not text:
         return {"words": [], "error": "Failed to extract article text"}
 
-    words = get_keywords(text, top_k=60)  
+    words = get_keywords(text, top_k=25)  
     return {"words": words}

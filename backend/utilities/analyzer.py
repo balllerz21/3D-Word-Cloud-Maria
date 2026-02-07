@@ -3,7 +3,13 @@ def get_keywords(text, top_k):
     if not text:
         return []
 
-    vectorizer = TfidfVectorizer(stop_words="english")
+    vectorizer = TfidfVectorizer(
+        stop_words="english",
+        ngram_range=(1, 2),  
+        max_features=1500,
+        sublinear_tf=True,
+        token_pattern=r"(?u)\b[a-zA-Z][a-zA-Z\-]{2,}\b"
+    )
     X = vectorizer.fit_transform([text])
 
     terms = vectorizer.get_feature_names_out()
