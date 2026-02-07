@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { analyzeArticle } from "./lib/api";
 import type { Keyword } from "./lib/types";
-import { GlobeVisualization } from "./components/Globe";
+import { Globe3D } from "./components/Globe";
 import "./App.css";
 
 export default function App() {
@@ -64,7 +64,6 @@ export default function App() {
           <div className="panelTitle">3D Globe Visualization</div>
 
           <div className="globeStage">
-            {/* loading overlay */}
             {isLoading && (
               <div className="loadingOverlay">
                 <div className="spinner" />
@@ -72,20 +71,15 @@ export default function App() {
               </div>
             )}
 
-            {/* empty state */}
             {!isLoading && !hasAnalyzed && (
               <div className="emptyState">
                 Paste a URL and click Analyze to generate the word cloud.
               </div>
             )}
 
-            {/* show globe ONLY after analyze */}
             {hasAnalyzed && (
-              <GlobeVisualization
-                keywords={keywords}
-                isActive={hasAnalyzed && !isLoading}
-              />
-            )}
+  <Globe3D keywords={keywords} isActive={!isLoading && keywords.length > 0} />
+)}
           </div>
         </section>
       </main>
